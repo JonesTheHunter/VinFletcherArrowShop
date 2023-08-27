@@ -21,6 +21,7 @@ All arrows have 3 parts:
 string? userInput;
 Arrows arrow = new();
 
+//MAIN GAME LOOP START
     Console.WriteLine("                               Arrowhead                            \n" +
                       "                  Steel,   |    Wood,   |    Obsidian               \n" +
                       "                     10g,  |      3g,   |          5g               \n" +
@@ -135,7 +136,7 @@ Console.WriteLine($"Arrow 1: You picked a arrow with a {arrow.ArrowheadType} arr
 Console.WriteLine($"Arrow 2: You picked a arrow with a {arrow2.ArrowheadType} arrowhead, \n" +
                   $"with a length of {arrow2.Length}cm, with {arrow2.FletchlingType} fletchling.\n" +
                   $"The total is: {arrow2.GetCost()}g. \n");
-
+//MAIN GAME LOOP END
 
 bool UserTypedExit(string userInput)
 {
