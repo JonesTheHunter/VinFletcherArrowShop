@@ -18,10 +18,15 @@ All arrows have 3 parts:
   arrow cost.
 */
 
+using System.Text.Json;
+using Microsoft.VisualBasic;
+
 string? userInput;
 Arrows arrow = new();
+Arrows elitearrow = Arrows.CreateEliteArrow();
+Arrows beginnerarrow = Arrows.CreateBeginnerArrow();
+Arrows marksmanarrow = Arrows.CreateMarksManArrow();
 
-//MAIN GAME LOOP START
     Console.WriteLine("                               Arrowhead                            \n" +
                       "                  Steel,   |    Wood,   |    Obsidian               \n" +
                       "                     10g,  |      3g,   |          5g               \n" +
@@ -34,109 +39,96 @@ Arrows arrow = new();
                       "            Plastic,   |     Goose Feather,   |     Turkey Feather  \n" +
                       "                10g,   |                3g,   |                 5g  \n" +
                       "--------------------------------------------------------------------\n" +
-                      "                                                                    \n");
+                      "                                                                    \n\n");
 
-    Console.Write("Pick arrowhead type: ");
+    Console.WriteLine("Current Presets: \n" +
+                     $"[1] Name: {elitearrow.Name}\n" +
+                     $"Arrowhead: {elitearrow.ArrowheadType}\n" +
+                     $"Length: {elitearrow.Length}\n" +
+                     $"Fletchling: {elitearrow.FletchlingType}\n" +
+                     $"Cost: {elitearrow.GetCost()}\n");
 
-while(arrow.ArrowheadIsUnknown())
-{   
-    userInput = Console.ReadLine();
-    if(UserTypedExit(userInput))
+    Console.WriteLine($"[2] Name: {beginnerarrow.Name}\n" +
+                     $"Arrowhead: {beginnerarrow.ArrowheadType}\n" +
+                     $"Length: {beginnerarrow.Length}\n" +
+                     $"Fletchling: {beginnerarrow.FletchlingType}\n" +
+                     $"Cost: {beginnerarrow.GetCost()}\n");
+              
+    Console.WriteLine($"[3] Name: {marksmanarrow.Name}\n" +
+                     $"Arrowhead: {marksmanarrow.ArrowheadType}\n" +
+                     $"Length: {marksmanarrow.Length}\n" +
+                     $"Fletchling: {marksmanarrow.FletchlingType}\n" +
+                     $"Cost: {marksmanarrow.GetCost()}\n");
+
+var userChoice = Console.ReadLine();
+    if(int.Parse(userChoice) == 1)
     {
-        return;
-    }
-    Arrows.Arrowhead arrowhead;
-    arrow.TrySetArrowheadType(userInput, out arrowhead);
-    arrow.ArrowheadType = arrowhead;
-}
-
-    Console.Write("Pick length of arrow shaft (60-100cm): ");
-
-while(!arrow.ArrowShaftIsCorrectLength())
-{
-    userInput = Console.ReadLine();
-    if(UserTypedExit(userInput))
-    {
-        return;
-    }
-    var length = arrow.Length;
-    arrow.TrySetShaftLength(userInput, out length);
-    arrow.Length = length;
-}
-
-    Console.Write("Pick Fletchling Type: ");
-
-while(arrow.FletchlingIsUnknown())
-{
-    userInput = Console.ReadLine();
-        if(UserTypedExit(userInput))
-    {
-        return;
-    }
-    var fletchling = Arrows.Fletchling.Unknown;
-    arrow.TrySetFletchlingType(userInput, out fletchling);
-    arrow.FletchlingType = fletchling;
-}
-
-
-Console.WriteLine($"You picked a arrow with a {arrow.ArrowheadType} arrowhead, \n" +
+        arrow = elitearrow;
+        Console.WriteLine($"You picked a arrow with a {arrow.ArrowheadType} arrowhead, \n" +
                   $"with a length of {arrow.Length}cm, with {arrow.FletchlingType} fletchling.\n" +
                   $"The total is: {arrow.GetCost()}g. \n");
-
-
-Arrows arrow2 = new();
-
-    Console.Write("Pick arrowhead type: ");
-
-while(arrow2.ArrowheadIsUnknown())
-{   
-    userInput = Console.ReadLine();
-    if(UserTypedExit(userInput))
-    {
-        return;
     }
-    var arrowhead = Arrows.Arrowhead.Unknown;
-    arrow2.TrySetArrowheadType(userInput, out arrowhead);
-    arrow2.ArrowheadType = arrowhead;
-}
-
-    Console.Write("Pick length of arrow shaft (60-100cm): ");
-
-while(!arrow2.ArrowShaftIsCorrectLength())
-{
-    userInput = Console.ReadLine();
-    if(UserTypedExit(userInput))
+    else if(int.Parse(userChoice) == 2)
     {
-        return;
-    }
-    var length = arrow.Length;
-    arrow2.TrySetShaftLength(userInput, out length);
-    arrow2.Length = length;
-}
-
-    Console.Write("Pick Fletchling Type: ");
-
-while(arrow2.FletchlingIsUnknown())
-{
-    userInput = Console.ReadLine();
-        if(UserTypedExit(userInput))
-    {
-        return;
-    }
-    var fletchling = Arrows.Fletchling.Unknown;
-    arrow2.TrySetFletchlingType(userInput, out fletchling);
-    arrow2.FletchlingType = fletchling;
-}
-
-Console.WriteLine($"Arrow 1: You picked a arrow with a {arrow.ArrowheadType} arrowhead, \n" +
+        arrow = beginnerarrow;
+        Console.WriteLine($"You picked a arrow with a {arrow.ArrowheadType} arrowhead, \n" +
                   $"with a length of {arrow.Length}cm, with {arrow.FletchlingType} fletchling.\n" +
                   $"The total is: {arrow.GetCost()}g. \n");
+    }
+    else if(int.Parse(userChoice) == 3)
+    {
+        arrow = marksmanarrow;
+        Console.WriteLine($"You picked a arrow with a {arrow.ArrowheadType} arrowhead, \n" +
+                  $"with a length of {arrow.Length}cm, with {arrow.FletchlingType} fletchling.\n" +
+                  $"The total is: {arrow.GetCost()}g. \n");
+    }
+    else{
+        while(arrow.ArrowheadIsUnknown())
+        {   
+            userInput = Console.ReadLine();
+            if(UserTypedExit(userInput))
+            {
+                return;
+            }
+            Arrows.Arrowhead arrowhead;
+            arrow.TrySetArrowheadType(userInput, out arrowhead);
+            arrow.ArrowheadType = arrowhead;
+        }
+
+            Console.Write("Pick length of arrow shaft (60-100cm): ");
+
+        while(!arrow.ArrowShaftIsCorrectLength())
+        {
+            userInput = Console.ReadLine();
+            if(UserTypedExit(userInput))
+            {
+                return;
+            }
+            var length = arrow.Length;
+            arrow.TrySetShaftLength(userInput, out length);
+            arrow.Length = length;
+        }
+
+            Console.Write("Pick Fletchling Type: ");
+
+        while(arrow.FletchlingIsUnknown())
+        {
+            userInput = Console.ReadLine();
+                if(UserTypedExit(userInput))
+            {
+                return;
+            }
+            var fletchling = Arrows.Fletchling.Unknown;
+            arrow.TrySetFletchlingType(userInput, out fletchling);
+            arrow.FletchlingType = fletchling;
+        }
 
 
-Console.WriteLine($"Arrow 2: You picked a arrow with a {arrow2.ArrowheadType} arrowhead, \n" +
-                  $"with a length of {arrow2.Length}cm, with {arrow2.FletchlingType} fletchling.\n" +
-                  $"The total is: {arrow2.GetCost()}g. \n");
-//MAIN GAME LOOP END
+        Console.WriteLine($"You picked a arrow with a {arrow.ArrowheadType} arrowhead, \n" +
+                        $"with a length of {arrow.Length}cm, with {arrow.FletchlingType} fletchling.\n" +
+                        $"The total is: {arrow.GetCost()}g. \n");
+    }                
+
 
 bool UserTypedExit(string userInput)
 {
@@ -158,10 +150,22 @@ public class Arrows
         Length = length;
         FletchlingType = fletchling;
     }
+
+        public Arrows(string name, Arrowhead arrowhead, float length, Fletchling fletchling)
+    {
+        Name = name;
+        ArrowheadType = arrowhead;
+        Length = length;
+        FletchlingType = fletchling;
+    }
     
+    public static Arrows CreateEliteArrow() => new Arrows("Elite Arrow", Arrowhead.Steel, 95, Fletchling.Plastic);
+    public static Arrows CreateBeginnerArrow() => new Arrows("Beginner Arrow", Arrowhead.Wood, 75f, Fletchling.GooseFeather);
+    public static Arrows CreateMarksManArrow() => new Arrows("Marksman Arrow", Arrowhead.Steel, 65, Fletchling.GooseFeather);
     public Arrowhead ArrowheadType { get; set; }
     public float Length { get; set; }
     public Fletchling FletchlingType { get; set; }
+    public string Name {get; init; }
 
     public bool ArrowheadIsUnknown()
     {
